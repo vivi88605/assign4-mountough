@@ -14,6 +14,8 @@ final int SOIL_ROW_COUNT = 24;
 final int SOIL_SIZE = 80;
 
 int[][] soilHealth;
+int cols = 8 ;
+int rows = 8 ;
 
 final int START_BUTTON_WIDTH = 144;
 final int START_BUTTON_HEIGHT = 60;
@@ -36,7 +38,7 @@ int playerMoveDirection = 0;
 int playerMoveTimer = 0;
 int playerMoveDuration = 15;
 
-boolean demoMode = false;
+boolean demoMode = true;
 
 void setup() {
 	size(640, 480, P2D);
@@ -70,6 +72,7 @@ void setup() {
 	for(int i = 0; i < soils.length; i++){
 		for(int j = 0; j < soils[i].length; j++){
 			soils[i][j] = loadImage("img/soils/soil" + i + "/soil" + i + "_" + j + ".png");
+//println("img/soils/soil" + i + "/soil" + i + "_" + j + ".png");
 		}
 	}
 
@@ -78,6 +81,7 @@ void setup() {
 	for(int i = 0; i < stones.length; i++){
 		for(int j = 0; j < stones[i].length; j++){
 			stones[i][j] = loadImage("img/stones/stone" + i + "/stone" + i + "_" + j + ".png");
+//println("img/stones/stone" + i + "/stone" + i + "_" + j + ".png");
 		}
 	}
 
@@ -92,11 +96,18 @@ void setup() {
 	// Initialize soilHealth
 	soilHealth = new int[SOIL_COL_COUNT][SOIL_ROW_COUNT];
 	for(int i = 0; i < soilHealth.length; i++){
-		for (int j = 0; j < soilHealth[i].length; j++) {
+		for (int j = 0; j < soilHealth[i].length; j++) {soilHealth[i][j]=15;
 			 // 0: no soil, 15: soil only, 30: 1 stone, 45: 2 stones
-			soilHealth[i][j] = 15;
+    if(i == j&& j<=7){soilHealth[i][j]=30;}
 		}
 	}
+  for(int i = 1; i < 24; i += 4){
+    int count = 1 + floor(random(2));
+    for(int j = 0; j < count; j++){
+      int col = floor(random(8));
+      int row = i + floor(random(4));soilHealth[col][row]=0;
+      //image(soilEmpty,col*SOIL_SIZE,row*SOIL_SIZE);  
+      }}
 
 	// Initialize soidiers and their position
 
@@ -159,7 +170,6 @@ void draw() {
 				// NOTE: To avoid errors on webpage, you can either use floor(j / 4) or (int)(j / 4) to make sure it's an integer.
 				int areaIndex = floor(j / 4);
 				image(soils[areaIndex][4], i * SOIL_SIZE, j * SOIL_SIZE);
-				
 			}
 		}
 
